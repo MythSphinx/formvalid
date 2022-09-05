@@ -1,6 +1,23 @@
 import './App.css';
-import { Col, Row, Button, Checkbox, Form, Input, InputNumber, Select } from 'antd';
-import React from 'react';
+import {
+  Col,
+  Row,
+  Button,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  Select,
+} from "antd";
+import "antd/dist/antd.min.css";
+import React from "react";
+
+const optionsType = [
+  { value: "Male", text: "Male" },
+  { value: "Female", text: "Female" },
+  { value: "Other", text: "Other" },
+];
 
 const { Option } = Select;
 
@@ -15,73 +32,71 @@ const layout = {
 /* eslint-disable no-template-curly-in-string */
 
 function App() {
-
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
 
-
-  const validateMessages = {
-    number: {
-      range: '${label} must be between ${min} and ${max}',
-    },
+  const onChange = (value) => {
+    console.log("changed", value);
   };
-  
 
   return (
-    <div className="Form">
-       <Form
-            name="basic"
-            {...layout}
-            initialValues={{
-              remember: true,
-            }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-            validateMessages={validateMessages}
-          >
+    <div className="App">
+      <div className="center">
+        <h3>Form Validation Project</h3>
+      </div>
+      <Form
+        name="basic"
+        labelCol={{
+          span: 10,
+        }}
+        wrapperCol={{
+          span: 8,
+        }}
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+      >
         <Form.Item
-            label="Username"
-            name="username"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your username!',
-              },
-            ]}
+          label="Name"
+          name="name"
+          rules={[
+            {
+              required: true,
+              message: "Please input your name!",
+            },
+          ]}
         >
           <Input />
         </Form.Item>
 
-        <Form.Item
-          name={['user', 'age']}
-          label="Age"
-          rules={[
-            {
-              type: 'number',
-              min: 0,
-              max: 99,
-            },
-        ]}
-      >
-          <InputNumber />
+        <Form.Item label="Age">
+          <InputNumber min={1} max={99} onChange={onChange} />
         </Form.Item>
 
-        <Form.Item name="gender" label="Gender" rules={[{ required: true }]}>
-          <Select
-            placeholder="Select a option and change input text above"
-            onChange={this.onGenderChange}
-            allowClear
-          >
-            <Option value="male">male</Option>
-            <Option value="female">female</Option>
-            <Option value="other">other</Option>
+        <Form.Item label="Gender">
+          <Select>
+            {optionsType.map((option) => (
+              <Option key={option.value} value={option.value}>
+                {option.text}
+              </Option>
+            ))}
           </Select>
+        </Form.Item>
+
+        <Form.Item label="Occupation" name="occupation">
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Birth Date">
+          <DatePicker />
         </Form.Item>
 
         <Form.Item
